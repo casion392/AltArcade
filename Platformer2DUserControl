@@ -1,0 +1,84 @@
+using System;
+using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
+
+
+namespace UnityStandardAssets._2D
+{
+    [RequireComponent(typeof (PlatformerCharacter2D))]
+    [RequireComponent(typeof(InputManagement))]
+    public class Platformer2DUserControl : MonoBehaviour
+    {
+        private PlatformerCharacter2D m_Character;
+        private bool m_Jump;
+       
+        public static float speed;
+
+        public bool isPlayer1, isPlayer2;
+
+        private void Awake()
+        {
+            m_Character = GetComponent<PlatformerCharacter2D>();
+        }
+
+
+        private void Update()
+        {
+            
+            speed = InputManagement.speeder;
+            
+           if(isPlayer1 && speed < 2000){  
+             
+                if (speed > 500 && speed < 2000)
+                {
+                speed = -(speed - 1000);
+                }
+
+                if (!m_Jump)
+                {
+                    if(speed == 420){
+                    m_Jump = true;
+                    speed = 0;
+                    }
+                }
+            
+                    bool crouch = Input.GetKey(KeyCode.LeftControl);
+                    float h = speed;
+                    // Pass all parameters to the character control script.
+                    m_Character.Move(h, crouch, m_Jump);
+                    m_Jump = false;
+            
+            
+       }
+            if (isPlayer2 && speed >=2000 || speed == 0)
+            {
+                    if(speed < 2500 && speed > 1500){
+                    speed = speed - 2000;
+                    }
+
+                    else if(speed > 2500)
+                    {
+                        speed = -(speed - 3000);
+                    }
+
+                    if (!m_Jump)
+                    {
+                        if (speed == 2500)
+                        {
+                            // Read the jump input in Update so button presses aren't missed.
+                            m_Jump = true;
+                            speed = 0;
+                        }
+                    }
+
+                    bool crouch = Input.GetKey(KeyCode.LeftControl);
+                    float h = speed;
+                    // Pass all parameters to the character control script.
+                    m_Character.Move(h, crouch, m_Jump);
+                    m_Jump = false;
+            }
+  
+       }
+
+    }
+}
